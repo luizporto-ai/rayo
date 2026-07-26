@@ -144,30 +144,32 @@
       padding: 176px 24px 128px;
     }
 
-    /* imagem de fundo — montanha nevada; tom frio dá contraste com o âmbar da UI */
+    /* fundo tech — grid técnico + glow âmbar (cara de dev, tipo Vercel/Linear) */
     .hero-bg {
       position: absolute;
       inset: 0;
       z-index: 0;
       overflow: hidden;
-      background: url('assets/hero-bg.webp') center 42% / cover no-repeat;
-      /* dessatura um toque pra não competir com o âmbar */
-      filter: saturate(0.72) brightness(0.9) contrast(1.02);
+      background-color: #000;
+      background-image:
+        linear-gradient(to right, rgba(255,255,255,0.07) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.07) 1px, transparent 1px);
+      background-size: 48px 48px;
+      background-position: center top;
+      /* fade radial: grid nítido no centro, some nas bordas */
+      -webkit-mask-image: radial-gradient(ellipse 92% 80% at 50% 32%, #000 12%, transparent 82%);
+      mask-image: radial-gradient(ellipse 92% 80% at 50% 32%, #000 12%, transparent 82%);
     }
-    /* overlays: topo bem escuro (céu claro) + calor âmbar + fade total pro preto (conecta na próxima section) */
+    /* glow âmbar + fade pro preto embaixo (conecta na próxima section) */
     .hero-bg::after {
       content: '';
       position: absolute;
       inset: 0;
+      -webkit-mask-image: none; mask-image: none;
       background:
-        radial-gradient(ellipse 72% 46% at 50% 2%, rgba(245,158,11,0.13) 0%, transparent 54%),
-        linear-gradient(180deg,
-          rgba(0,0,0,0.72) 0%,
-          rgba(0,0,0,0.48) 24%,
-          rgba(0,0,0,0.60) 54%,
-          rgba(0,0,0,0.90) 82%,
-          #000 100%),
-        radial-gradient(ellipse 70% 60% at 50% 42%, transparent 0%, rgba(0,0,0,0.38) 100%);
+        radial-gradient(ellipse 60% 42% at 50% 0%, rgba(245,158,11,0.16) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 30% at 50% 30%, rgba(245,158,11,0.06) 0%, transparent 70%),
+        linear-gradient(180deg, transparent 0%, transparent 55%, rgba(0,0,0,0.6) 82%, #000 100%);
     }
 
     .hero-inner {
