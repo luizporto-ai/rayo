@@ -89,25 +89,17 @@
     .wordmark {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: -0.025em;
       padding-right: 14px;
       margin-right: 2px;
       border-right: 1px solid var(--line);
     }
 
-    .wordmark-icon {
-      width: 26px;
-      height: 26px;
-      border-radius: 7px;
-      background: var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      color: #000;
+    .wordmark i {
+      font-size: 20px;
+      background: linear-gradient(145deg, #fcd34d 0%, var(--accent) 60%, #d97706 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .nav-link {
@@ -117,9 +109,9 @@
       text-decoration: none;
       padding: 7px 13px;
       border-radius: 999px;
-      transition: color 0.15s, background 0.15s;
+      transition: color 0.15s;
     }
-    .nav-link:hover { color: var(--paper); background: var(--line); }
+    .nav-link:hover { color: var(--paper); }
 
     /* CTA dentro do pill — branco sólido, Pierre */
     .nav-cta {
@@ -437,8 +429,7 @@
   <!-- PILL NAV -->
   <nav>
     <div class="wordmark">
-      <div class="wordmark-icon"><i class="bi bi-lightning-charge-fill"></i></div>
-      rayo
+      <i class="bi bi-lightning-charge-fill"></i>
     </div>
     <a class="nav-link" href="#">Docs</a>
     <a class="nav-link" href="#">Examples</a>
