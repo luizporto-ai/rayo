@@ -838,9 +838,8 @@
       <i class="bi bi-lightning-charge-fill"></i>
       rayo
     </div>
-    <a class="nav-link" href="#">Docs</a>
-    <a class="nav-link" href="#">Examples</a>
-    <a class="nav-link" href="#">Changelog</a>
+    <a class="nav-link" href="#como-funciona">Como funciona</a>
+    <a class="nav-link" href="#angulos">Ângulos</a>
     <a class="nav-cta" href="https://github.com/luizporto-ai/rayo">
       <i class="bi bi-github"></i> GitHub
     </a>
@@ -861,25 +860,25 @@
       </p>
 
       <div class="hero-actions">
-        <a class="btn-primary" href="#">
+        <a class="btn-primary" href="https://github.com/luizporto-ai/rayo">
           Começar agora <i class="bi bi-arrow-right"></i>
         </a>
-        <a class="btn-ghost" href="#">
+        <a class="btn-ghost" href="#demo">
           <i class="bi bi-play-circle"></i> Ver demo
         </a>
       </div>
 
       <div class="cmd-pill">
-        <span class="cmd">npx</span>
-        <span>create-rayo-app</span>
+        <span class="cmd">git clone</span>
+        <span>github.com/luizporto-ai/rayo</span>
         <span class="sep"></span>
-        <span class="copy"><i class="bi bi-clipboard"></i> copiar</span>
+        <span class="copy" data-clip="git clone https://github.com/luizporto-ai/rayo"><i class="bi bi-clipboard"></i> copiar</span>
       </div>
     </div>
   </section>
 
   <!-- SHOWCASE — mockup do editor -->
-  <section class="showcase">
+  <section class="showcase" id="demo">
     <div class="app-window">
       <div class="app-bar">
         <div class="app-dots"><span></span><span></span><span></span></div>
@@ -916,7 +915,7 @@
   </section>
 
   <!-- COMO FUNCIONA -->
-  <section class="section" style="padding-bottom:72px">
+  <section class="section" id="como-funciona" style="padding-bottom:72px">
     <div class="section-header">
       <span class="section-label">Como funciona</span>
       <div class="section-rule"></div>
@@ -974,7 +973,7 @@
   </section>
 
   <!-- 7 ANGLES -->
-  <section class="section" style="padding-top:0">
+  <section class="section" id="angulos" style="padding-top:0">
     <div class="section-header">
       <span class="section-label">7 ângulos virais</span>
       <div class="section-rule"></div>
@@ -1041,8 +1040,8 @@
           <a class="btn-primary" href="https://github.com/luizporto-ai/rayo">
             <i class="bi bi-github"></i> Ver no GitHub
           </a>
-          <a class="btn-ghost" href="#">
-            <i class="bi bi-book"></i> Ler os docs
+          <a class="btn-ghost" href="#como-funciona">
+            <i class="bi bi-book"></i> Como funciona
           </a>
         </div>
       </div>
@@ -1090,6 +1089,20 @@
         el.classList.add('in');
       });
     });
+
+    // copiar comando de instalação
+    const copyBtn = document.querySelector('.cmd-pill .copy');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', async () => {
+        const text = copyBtn.dataset.clip || 'git clone https://github.com/luizporto-ai/rayo';
+        try {
+          await navigator.clipboard.writeText(text);
+          const original = copyBtn.innerHTML;
+          copyBtn.innerHTML = '<i class="bi bi-check-lg"></i> copiado';
+          setTimeout(() => { copyBtn.innerHTML = original; }, 1600);
+        } catch (e) { /* clipboard indisponível */ }
+      });
+    }
   </script>
 
 </body>
