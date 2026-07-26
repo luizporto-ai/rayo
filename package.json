@@ -1,0 +1,51 @@
+{
+  "name": "@luizporto/rayo",
+  "version": "0.1.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "description": "Open-source video editor you drive with your Claude — feed one raw talking-head clip, get a sharp edit: silence-cut, word-synced captions, b-roll cutaways, split-screen, punch-in zoom, and a 9:16 reframe. Local and free; the only paid part is your own Claude.",
+  "type": "module",
+  "bin": {
+    "rayo": "bin/cli.js"
+  },
+  "exports": {
+    ".": "./lib/scaffold.js"
+  },
+  "files": [
+    "bin",
+    "lib",
+    "template",
+    "SKILL.md"
+  ],
+  "scripts": {
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=18.17"
+  },
+  "keywords": [
+    "video-editing",
+    "remotion",
+    "captions",
+    "whisper",
+    "claude",
+    "claude-code",
+    "ai-video",
+    "b-roll",
+    "split-screen",
+    "reframe",
+    "tiktok",
+    "reels",
+    "shorts",
+    "open-source"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luizporto-ai/rayo.git"
+  },
+  "homepage": "https://github.com/luizporto-ai/rayo#readme",
+  "bugs": "https://github.com/luizporto-ai/rayo/issues",
+  "author": "",
+  "license": "MIT"
+}

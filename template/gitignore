@@ -1,0 +1,8 @@
+node_modules/
+out/
+.whisper/
+public/*.mp4
+public/*.mov
+public/*.webm
+public/*.wav
+!public/.gitkeep
