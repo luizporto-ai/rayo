@@ -144,28 +144,30 @@
       padding: 176px 24px 128px;
     }
 
-    /* imagem de fundo — pôr do sol âmbar, já é a paleta */
+    /* imagem de fundo — montanha nevada; tom frio dá contraste com o âmbar da UI */
     .hero-bg {
       position: absolute;
       inset: 0;
       z-index: 0;
       overflow: hidden;
-      background: url('assets/hero-bg.webp') center 30% / cover no-repeat;
+      background: url('assets/hero-bg.webp') center 42% / cover no-repeat;
+      /* dessatura um toque pra não competir com o âmbar */
+      filter: saturate(0.72) brightness(0.9) contrast(1.02);
     }
-    /* overlays: escurece o suficiente pro texto ler + fade total pro preto embaixo (conecta na próxima section) */
+    /* overlays: topo bem escuro (céu claro) + calor âmbar + fade total pro preto (conecta na próxima section) */
     .hero-bg::after {
       content: '';
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(ellipse 72% 44% at 50% 4%, rgba(245,158,11,0.12) 0%, transparent 56%),
+        radial-gradient(ellipse 72% 46% at 50% 2%, rgba(245,158,11,0.13) 0%, transparent 54%),
         linear-gradient(180deg,
-          rgba(0,0,0,0.58) 0%,
-          rgba(0,0,0,0.32) 28%,
-          rgba(0,0,0,0.56) 58%,
-          rgba(0,0,0,0.88) 84%,
+          rgba(0,0,0,0.72) 0%,
+          rgba(0,0,0,0.48) 24%,
+          rgba(0,0,0,0.60) 54%,
+          rgba(0,0,0,0.90) 82%,
           #000 100%),
-        radial-gradient(ellipse 70% 60% at 50% 44%, transparent 0%, rgba(0,0,0,0.34) 100%);
+        radial-gradient(ellipse 70% 60% at 50% 42%, transparent 0%, rgba(0,0,0,0.38) 100%);
     }
 
     .hero-inner {
