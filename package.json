@@ -1,51 +1,33 @@
 {
-  "name": "@luizporto/rayo",
+  "name": "rayo",
   "version": "0.1.0",
-  "publishConfig": {
-    "access": "public"
-  },
-  "description": "Open-source video editor you drive with your Claude — feed one raw talking-head clip, get a sharp edit: silence-cut, word-synced captions, b-roll cutaways, split-screen, punch-in zoom, and a 9:16 reframe. Local and free; the only paid part is your own Claude.",
-  "type": "module",
-  "bin": {
-    "rayo": "bin/cli.js"
-  },
-  "exports": {
-    ".": "./lib/scaffold.js"
-  },
-  "files": [
-    "bin",
-    "lib",
-    "template",
-    "SKILL.md"
-  ],
-  "scripts": {
-    "test": "node --test"
-  },
-  "engines": {
-    "node": ">=18.17"
-  },
-  "keywords": [
-    "video-editing",
-    "remotion",
-    "captions",
-    "whisper",
-    "claude",
-    "claude-code",
-    "ai-video",
-    "b-roll",
-    "split-screen",
-    "reframe",
-    "tiktok",
-    "reels",
-    "shorts",
-    "open-source"
-  ],
+  "description": "Open-source video editor you drive with your Claude — feed one raw clip, get a sharp edit. Local and free; the only paid part is your own Claude.",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/luizporto-ai/rayo.git"
   },
   "homepage": "https://github.com/luizporto-ai/rayo#readme",
-  "bugs": "https://github.com/luizporto-ai/rayo/issues",
-  "author": "",
-  "license": "MIT"
+  "scripts": {
+    "dev": "remotion studio",
+    "clean": "node scripts/clean-detect.mjs",
+    "transcribe": "node scripts/transcribe.mjs",
+    "render": "remotion render Edit out/edit.mp4",
+    "render:vertical": "remotion render EditVertical out/vertical.mp4",
+    "upgrade": "remotion upgrade",
+    "lint": "tsc"
+  },
+  "dependencies": {
+    "@remotion/captions": "4.0.478",
+    "@remotion/cli": "4.0.478",
+    "@remotion/google-fonts": "4.0.478",
+    "@remotion/install-whisper-cpp": "4.0.478",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "remotion": "4.0.478"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.7",
+    "typescript": "5.9.3"
+  }
 }

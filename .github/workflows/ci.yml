@@ -7,17 +7,13 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
-    name: node ${{ matrix.node }} on ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        node: [18, 20, 22]
-    runs-on: ${{ matrix.os }}
+  typecheck:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node }}
-      - run: npm test
+          node-version: 20
+      - run: npm install --no-audit --no-fund
+      - run: npx tsc
+      - run: npx remotion compositions src/index.ts

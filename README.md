@@ -11,11 +11,10 @@ non-destructive edits over the <i>same</i> source.<br/>
 </p>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/@luizporto/rayo"><img alt="npm" src="https://img.shields.io/npm/v/@luizporto/rayo?color=black"></a>
   <a href="https://github.com/luizporto-ai/rayo/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/luizporto-ai/rayo/actions/workflows/ci.yml/badge.svg"></a>
   <a href="#license"><img alt="license MIT" src="https://img.shields.io/badge/license-MIT-black"></a>
-  <img alt="tested on Windows, macOS, Linux" src="https://img.shields.io/badge/tested-Windows_·_macOS_·_Linux-black">
-  <img alt="node 18.17+" src="https://img.shields.io/badge/node-18.17%2B-black">
+  <img alt="Remotion" src="https://img.shields.io/badge/render-Remotion-black">
+  <img alt="whisper.cpp local" src="https://img.shields.io/badge/STT-whisper.cpp_local-black">
   <img alt="Claude Skill" src="https://img.shields.io/badge/Claude-Skill-black">
 </p>
 
@@ -24,14 +23,15 @@ non-destructive edits over the <i>same</i> source.<br/>
 ## Start in 30 seconds
 
 ```bash
-npx @luizporto/rayo init my-video
-cd my-video && npm install
+git clone https://github.com/luizporto-ai/rayo && cd rayo
+npm install
 # drop your raw clip at public/input.mp4
 npm run transcribe && npm run dev
 ```
 
-That opens the Remotion Studio with your video already loaded. From here you edit by
-**telling your Claude** what you want — or by hand, in one file.
+You also need `ffmpeg` (macOS `brew install ffmpeg` · Ubuntu `apt install ffmpeg` ·
+Windows `winget install ffmpeg`). `npm run dev` opens the Remotion Studio with your video
+loaded. From here you edit by **telling your Claude** what you want — or by hand, in one file.
 
 ## The magic: you talk, the visual follows
 
@@ -75,7 +75,7 @@ Reframe 9:16   the same edit re-composed for Reels / TikTok / Shorts, no redo
 
 ## Drive it with your Claude
 
-`rayo init` installs a **skill** into your project (`.claude/skills/rayo/`). Open Claude Code
+The repo ships a **skill** (`.claude/skills/rayo/`, mirrored as `SKILL.md`). Open Claude Code
 in the folder and just say it:
 
 > "transcribe it, cut the silences, and put b-roll of the city when I say São Paulo"
@@ -102,8 +102,8 @@ is Remotion. No telemetry, no network except downloading the whisper model once.
 ## Contributing
 
 A new function is a new operation type in `src/edit/edit.ts` plus a small layer in the
-composition — that's the whole extension model. The `template/` folder is what `init` copies;
-`SKILL.md` is what teaches an agent to drive it. PRs welcome.
+composition — that's the whole extension model. `SKILL.md` is what teaches an agent to drive
+it. PRs welcome.
 
 ## License
 
