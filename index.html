@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rayo — AI Content Editor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    :root {
+      --bg:         #09090b;
+      --surface:    #111113;
+      --surface-2:  #18181b;
+      --border:     #27272a;
+      --border-2:   #3f3f46;
+      --text:       #fafafa;
+      --text-2:     #e4e4e7;
+      --muted:      #71717a;
+      --dim:        #52525b;
+      --accent:     #f59e0b;
+      --accent-dim: rgba(245,158,11,0.10);
+      --accent-mid: rgba(245,158,11,0.25);
+      --accent-glow: rgba(245,158,11,0.40);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 100;
+      height: 56px;
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      background: rgba(9,9,11,0.82);
+      backdrop-filter: blur(14px);
+    }
+
+    .wordmark {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .wordmark-icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      border: 1px solid var(--accent-mid);
+      background: radial-gradient(circle at 50% 120%, rgba(245,158,11,0.45) 0%, rgba(245,158,11,0.06) 55%, transparent 75%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-link {
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      transition: color 0.15s, background 0.15s;
+    }
+    .nav-link:hover { color: var(--text-2); background: var(--surface-2); }
+
+    .nav-divider { width: 1px; height: 18px; background: var(--border); margin: 0 4px; }
+
+    .nav-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 1px solid var(--accent-mid);
+      padding: 3px 9px;
+      border-radius: 4px;
+    }
+
+    .nav-gh {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-2);
+      text-decoration: none;
+      padding: 6px 12px;
+      border: 1px solid var(--border-2);
+      border-radius: 6px;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .nav-gh:hover { border-color: var(--dim); background: var(--surface-2); }
+
+    /* ─── HERO ─── */
+    .hero {
+      padding: 136px 28px 88px;
+      max-width: 780px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+    .hero-eyebrow::before,
+    .hero-eyebrow::after {
+      content: '';
+      display: block;
+      width: 28px;
+      height: 1px;
+      background: var(--border-2);
+    }
+
+    .hero-title {
+      font-size: clamp(44px, 7.5vw, 76px);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.03;
+      margin-bottom: 22px;
+    }
+
+    .hero-title .accent {
+      background: linear-gradient(90deg, var(--accent) 0%, #fcd34d 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 480px;
+      margin: 0 auto 36px;
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 20px;
+      background: var(--accent);
+      color: #000;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 7px;
+      text-decoration: none;
+      transition: opacity 0.15s, box-shadow 0.15s;
+    }
+    .btn-primary:hover { opacity: 0.9; box-shadow: 0 0 20px -4px var(--accent-glow); }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-2);
+      border: 1px solid var(--border-2);
+      border-radius: 7px;
+      text-decoration: none;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .btn-ghost:hover { border-color: var(--dim); background: var(--surface-2); }
+
+    .cmd-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 16px;
+      margin-top: 28px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .cmd-pill .cmd { color: var(--accent); }
+    .cmd-pill .copy {
+      font-size: 11px;
+      color: var(--dim);
+      border-left: 1px solid var(--border);
+      padding-left: 12px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    /* ─── STACK ─── */
+    .stack-row {
+      border-top: 1px solid var(--border);
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+    }
+
+    .stack-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 18px 24px;
+      border-right: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .stack-item:first-child { padding-left: 0; }
+    .stack-item i { color: var(--dim); font-size: 14px; }
+
+    /* ─── SECTION ─── */
+    .section {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 72px 28px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .section-rule {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ─── FEATURES ─── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .feature {
+      padding: 32px 28px;
+      background: var(--bg);
+      transition: background 0.2s;
+    }
+    .feature:hover { background: var(--surface); }
+
+    .feature-icon-wrap {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      border: 1px solid var(--accent-mid);
+      background: radial-gradient(circle at 50% 120%, rgba(245,158,11,0.48) 0%, rgba(245,158,11,0.08) 55%, transparent 75%);
+      box-shadow: 0 8px 22px -10px var(--accent-glow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+      font-size: 18px;
+    }
+
+    .feature-icon-wrap i {
+      background: linear-gradient(145deg, #fcd34d 0%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .feature-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .feature-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ─── ANGLES ─── */
+    .angles-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+    }
+
+    .angle {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 12px 18px;
+      text-align: center;
+      transition: border-color 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .angle::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 100%, rgba(245,158,11,0.12) 0%, transparent 65%);
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+    .angle:hover { border-color: var(--accent-mid); }
+    .angle:hover::after { opacity: 1; }
+
+    .angle-icon-wrap {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: 1px solid var(--border-2);
+      background: var(--surface-2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+      font-size: 15px;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+      z-index: 1;
+    }
+
+    .angle:hover .angle-icon-wrap {
+      border-color: var(--accent-mid);
+      background: radial-gradient(circle at 50% 120%, rgba(245,158,11,0.35) 0%, rgba(245,158,11,0.06) 60%, transparent 80%);
+    }
+
+    .angle-icon-wrap i {
+      color: var(--dim);
+      transition: color 0.2s;
+    }
+    .angle:hover .angle-icon-wrap i {
+      background: linear-gradient(145deg, #fcd34d, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .angle-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      color: var(--dim);
+      margin-bottom: 6px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .angle-name {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--muted);
+      line-height: 1.35;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid var(--border);
+      max-width: 980px;
+      margin: 48px auto 0;
+      padding: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-wordmark {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .footer-wordmark i {
+      background: linear-gradient(145deg, #fcd34d, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .footer-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--border-2);
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="wordmark">
+      <div class="wordmark-icon"><i class="bi bi-lightning-charge-fill"></i></div>
+      rayo
+    </div>
+    <div class="nav-links">
+      <a class="nav-link" href="#">Docs</a>
+      <a class="nav-link" href="#">Examples</a>
+      <a class="nav-link" href="#">Changelog</a>
+      <div class="nav-divider"></div>
+      <span class="nav-badge">Open Source</span>
+      <a class="nav-gh" href="https://github.com/luizporto-ai/rayo">
+        <i class="bi bi-github"></i> GitHub
+      </a>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <div class="hero-eyebrow">Built with Remotion + Claude API</div>
+      <h1 class="hero-title">
+        Edit content.<br>
+        <span class="accent">Via AI.</span>
+      </h1>
+      <p class="hero-sub">
+        Editor open source para criadores de conteúdo. Predefinições, habilidades Claude e os 7 ângulos mais virais do Instagram — sem interface complicada.
+      </p>
+      <div class="hero-actions">
+        <a class="btn-primary" href="#">
+          Começar agora <i class="bi bi-arrow-right"></i>
+        </a>
+        <a class="btn-ghost" href="#">
+          <i class="bi bi-play-circle"></i> Ver demo
+        </a>
+      </div>
+      <div class="cmd-pill">
+        <span class="cmd">npx</span>
+        <span>create-rayo-app</span>
+        <span class="copy"><i class="bi bi-clipboard"></i> copiar</span>
+      </div>
+    </section>
+
+    <div class="stack-row">
+      <div class="stack-item"><i class="bi bi-camera-video"></i> Remotion</div>
+      <div class="stack-item"><i class="bi bi-cpu"></i> Claude API</div>
+      <div class="stack-item"><i class="bi bi-filetype-tsx"></i> TypeScript</div>
+      <div class="stack-item"><i class="bi bi-github"></i> MIT License</div>
+    </div>
+
+    <section class="section">
+      <div class="section-header">
+        <span class="section-label">Funcionalidades</span>
+        <div class="section-rule"></div>
+      </div>
+      <div class="features-grid">
+        <div class="feature">
+          <div class="feature-icon-wrap">
+            <i class="bi bi-layout-text-sidebar-reverse"></i>
+          </div>
+          <div class="feature-title">Predefinições</div>
+          <p class="feature-desc">Templates prontos para os formatos mais usados. Carrossel, Reels, Stories — sem começar do zero.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon-wrap">
+            <i class="bi bi-stars"></i>
+          </div>
+          <div class="feature-title">Habilidades Claude</div>
+          <p class="feature-desc">Skills especializadas injetadas no contexto. O Claude sabe exatamente o que produzir para cada formato.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon-wrap">
+            <i class="bi bi-bar-chart-line"></i>
+          </div>
+          <div class="feature-title">Testes de ângulo</div>
+          <p class="feature-desc">Teste variações do mesmo conteúdo em diferentes ângulos antes de publicar. Dados, não achismos.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0">
+      <div class="section-header">
+        <span class="section-label">7 ângulos virais</span>
+        <div class="section-rule"></div>
+      </div>
+      <div class="angles-grid">
+        <div class="angle">
+          <div class="angle-num">01</div>
+          <div class="angle-icon-wrap"><i class="bi bi-exclamation-diamond"></i></div>
+          <div class="angle-name">Choque & surpresa</div>
+        </div>
+        <div class="angle">
+          <div class="angle-num">02</div>
+          <div class="angle-icon-wrap"><i class="bi bi-person-lines-fill"></i></div>
+          <div class="angle-name">Narrativa pessoal</div>
+        </div>
+        <div class="angle">
+          <div class="angle-num">03</div>
+          <div class="angle-icon-wrap"><i class="bi bi-chat-square-quote"></i></div>
+          <div class="angle-name">Opinião polêmica</div>
+        </div>
+        <div class="angle">
+          <div class="angle-num">04</div>
+          <div class="angle-icon-wrap"><i class="bi bi-graph-up-arrow"></i></div>
+          <div class="angle-name">Dado & prova</div>
+        </div>
+        <div class="angle">
+          <div class="angle-num">05</div>
+          <div class="angle-icon-wrap"><i class="bi bi-list-check"></i></div>
+          <div class="angle-name">Tutorial direto</div>
+        </div>
+        <div class="angle">
+          <div class="angle-num">06</div>
+          <div class="angle-icon-wrap"><i class="bi bi-x-octagon"></i></div>
+          <div class="angle-name">Erro comum</div>
+        </div>
+        <div class="angle">
+          <div class="angle-num">07</div>
+          <div class="angle-icon-wrap"><i class="bi bi-arrow-left-right"></i></div>
+          <div class="angle-name">Antes vs depois</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-wordmark">
+      <i class="bi bi-lightning-charge-fill"></i> rayo
+    </div>
+    <div class="footer-meta">MIT License · v0.1.0-alpha</div>
+  </footer>
+
+</body>
+</html>
